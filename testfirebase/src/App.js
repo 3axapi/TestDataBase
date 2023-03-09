@@ -1,6 +1,8 @@
 import logo from './logo.svg';
 import './App.css';
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
+
+// https://firebase.google.com/
 
 function App() {
 
@@ -11,8 +13,10 @@ function App() {
     //console.log(myData);
   }
 
-  async function getDataHandler() {
-    const response = await fetch('https://react-logo-default-rtdb.firebaseio.com/pirewsze_kroki.json');
+  // fetch().then().then().cought() ...
+
+  const getDataHandler = useCallback(async () => {
+    const response = await fetch('https://testbase-r-default-rtdb.firebaseio.com/pirewsze_kroki.json'); // zwraca objektnicą
     // console.log(response);
     const data = await response.json();
     // console.log(data);
@@ -24,9 +28,9 @@ function App() {
       })
     }
 
-    // console.log(data);
+    console.log(data);
     // console.log(loadedData);
-  }
+  });
 
   async function sendDataHandler(event) {
     event.preventDefault()
@@ -36,12 +40,12 @@ function App() {
     };
 
     console.log(myData);
-    const response = await fetch('https://react-logo-default-rtdb.firebaseio.com/pirewsze_kroki.json',
+    const response = await fetch('https://testbase-r-default-rtdb.firebaseio.com/pirewsze_kroki.json',
     {
       method: 'POST',
       body: JSON.stringify(my_object),
       headers: {
-        'Content-Type': 'aoolication/json'
+        'Content-Type': 'application/json'
       }
     });
 
@@ -49,6 +53,10 @@ function App() {
     console.log(myData);
     setMyDate('');
   }
+
+  useEffect(() => {
+    getDataHandler()
+  }, [getDataHandler])
 
   return (
     <div className="App">
